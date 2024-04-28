@@ -1,0 +1,17 @@
+Post http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+  "content": "HTML is boring",
+  "important": true
+}
+
+
+###
+Post http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+  "content": "CSS is chaotic",
+  "important": true
+}
