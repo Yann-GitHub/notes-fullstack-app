@@ -90,6 +90,8 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.name === "CastError") {
     return response.status(400).send({ error: "malformatted id" });
+  } else if (error.name === "ValidationError") {
+    return response.status(400).json({ error: error.message });
   }
 
   next(error);
@@ -252,12 +254,13 @@ app.delete("/api/notes/:id", (request, response, next) => {
 // });
 
 //////////////////////// Add a resource - 200 OK - Modify the handler function to use the Note model and the MongoDB database
-app.post("/api/notes", (request, response) => {
+app.post("/api/notes", (request, response, next) => {
   const body = request.body;
 
-  if (body.content === undefined) {
-    return response.status(400).json({ error: "content missing" });
-  }
+  // Managing the error without error handler middleware
+  // if (body.content === undefined) {
+  //   return response.status(400).json({ error: "content missing" });
+  // }
 
   // Create a new note with the Note model
   const note = new Note({
@@ -265,21 +268,38 @@ app.post("/api/notes", (request, response) => {
     important: body.important || false,
   });
 
-  note.save().then((savedNote) => {
-    response.json(savedNote);
-  });
+  note
+    .save()
+    .then((savedNote) => {
+      response.json(savedNote);
+    })
+    .catch((error) => next(error));
 });
 
 //////////////////////// Update a resource (toggle the important setting ) - 200 OK or 404 Not Found
 app.put("/api/notes/:id", (request, response, next) => {
-  const body = request.body;
+  // Viable without validation - 1st way
+  //   const body = request.body;
 
-  const note = {
-    content: body.content,
-    important: body.important,
-  };
+  //   const note = {
+  //     content: body.content,
+  //     important: body.important,
+  //   };
 
-  Note.findByIdAndUpdate(request.params.id, note, { new: true })
+  //   Note.findByIdAndUpdate(request.params.id, note, { new: true })
+  //     .then((updatedNote) => {
+  //       response.json(updatedNote);
+  //     })
+  //     .catch((error) => next(error));
+  // });
+
+  // Viable with Mongoose validation - 2nd way - validations are not run by default when findOneAndUpdate and related methods
+  const { content, important } = request.body;
+  Note.findByIdAndUpdate(
+    request.params.id,
+    { content, important },
+    { new: true, runValidators: true, context: "query" }
+  )
     .then((updatedNote) => {
       response.json(updatedNote);
     })

@@ -18,9 +18,15 @@ mongoose
     console.log("error connecting to MongoDB:", error.message);
   });
 
-// Define a schema for the notes
+// Define a schema for the notes - without validation
+// const noteSchema = new mongoose.Schema({
+//   content: String,
+//   important: Boolean,
+// });
+
+// Define a schema for the notes - with validation
 const noteSchema = new mongoose.Schema({
-  content: String,
+  content: { type: String, minLength: 5, required: true },
   important: Boolean,
 });
 
