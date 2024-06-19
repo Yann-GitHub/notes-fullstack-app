@@ -1,5 +1,5 @@
 require("dotenv").config();
-const mongoose = require("mongoose"); //  For MongoDB Atlas connection - ODM
+// const mongoose = require("mongoose"); //  For MongoDB Atlas connection - ODM
 
 console.log(
   " <<<||-------------------  Wesh papa, ton server est lancé (notes) !  -------------------||>>>"
@@ -206,7 +206,7 @@ app.get("/api/notes/:id", (request, response, next) => {
 //Modify the handler function to use Mongoose and the MongoDB database
 app.delete("/api/notes/:id", (request, response, next) => {
   Note.findByIdAndDelete(request.params.id)
-    .then((result) => {
+    .then(() => {
       response.status(204).end();
     })
     .catch((error) => next(error));

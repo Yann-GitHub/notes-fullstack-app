@@ -11,7 +11,7 @@ console.log("connecting to", url);
 // Connect to the database
 mongoose
   .connect(url)
-  .then((result) => {
+  .then(() => {
     console.log("connected to MongoDB");
   })
   .catch((error) => {

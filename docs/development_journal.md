@@ -20,3 +20,7 @@
 4. Prevent env variables from being copied to Fly.io / create and use .dockerignore file / then set the env value from the command line with the command "fly secrets set MONGO_URI=yourMongoUri" / since the PORT is also defined in the .env file, it is essential to ignore the file in Fly.io since otherwise the app starts on the wrong port
 
 5. Completing other routes handlers to use the database / add and get note by id / delete note by id / update note by id / error handling - and dedicated middleware / testing with Postman / testing with the frontend / then test the app in production mode
+
+6. Modify routes handlers to use Mongoose validation / create a schema with validation rules / use the schema to validate the request body / handle validation errors / test the validation with the frontend
+
+7. Install and config Eslint / create a .eslintrc.json file and .eslintignore file / install the necessary packages / configure the rules / use extensions in VSCode.
