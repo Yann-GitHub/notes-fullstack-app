@@ -24,3 +24,5 @@
 6. Modify routes handlers to use Mongoose validation / create a schema with validation rules / use the schema to validate the request body / handle validation errors / test the validation with the frontend
 
 7. Install and config Eslint / create a .eslintrc.json file and .eslintignore file / install the necessary packages / configure the rules / use extensions in VSCode.
+
+8. Code refactoring / follow recommended practices and update folder structure / create a dedicated folder for controllers, models and utils
