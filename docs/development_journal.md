@@ -26,3 +26,5 @@
 7. Install and config Eslint / create a .eslintrc.json file and .eslintignore file / install the necessary packages / configure the rules / use extensions in VSCode.
 
 8. Code refactoring / follow recommended practices and update folder structure / create a dedicated folder for controllers, models and utils
+
+9. Start implementing tests / Install Lodash lib for advanced data manipulation / update scripts in package.json, .env file and config.js to lauch server in different environments /
