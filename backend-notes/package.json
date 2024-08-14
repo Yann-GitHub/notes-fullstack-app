@@ -25,6 +25,7 @@
     "@flydotio/dockerfile": "^0.5.0",
     "@stylistic/eslint-plugin-js": "^2.2.2",
     "eslint": "^8.5.0",
-    "nodemon": "^3.0.3"
+    "nodemon": "^3.0.3",
+    "supertest": "^7.0.0"
   }
 }
