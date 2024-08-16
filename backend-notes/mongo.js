@@ -1,3 +1,4 @@
+// Used to create and populate test-database with initial data /
 require("dotenv").config();
 const mongoose = require("mongoose");
 
