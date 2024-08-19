@@ -24,7 +24,7 @@ describe("when there is initially some notes saved", () => {
 
   test("all notes are returned", async () => {
     const response = await api.get("/api/notes");
-    console.log(response.body);
+    // console.log(response.body);
 
     assert.strictEqual(response.body.length, helper.initialNotes.length);
   });

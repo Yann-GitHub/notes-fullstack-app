@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const notesRouter = require("./controllers/notes");
+const usersRouter = require("./controllers/users");
 const middleware = require("./utils/middleware");
 const logger = require("./utils/logger");
 const mongoose = require("mongoose");
@@ -26,6 +27,7 @@ app.use(express.json()); // Middleware function that parses incoming requests wi
 app.use(middleware.requestLogger); // Middleware function that logs the request method, path, and body to the console
 
 app.use("/api/notes", notesRouter);
+app.use("/api/users", usersRouter);
 
 app.use(middleware.unknownEndpoint); // Middleware function that returns an error message if the request is made to a non-existent route
 app.use(middleware.errorHandler); // Middleware function that handles errors in a centralized way

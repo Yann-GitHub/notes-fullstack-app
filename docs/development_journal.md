@@ -28,3 +28,5 @@
 8. Code refactoring / follow recommended practices and update folder structure / create a dedicated folder for controllers, models and utils
 
 9. Start implementing tests / Install Lodash lib for advanced data manipulation / Update scripts in package.json, .env file and config.js to lauch server in different environments / Unit tests with Node:test / Create and populate the test database with mongo.js file(Atlas) / Integration tests with Supertest / Add BeforeEach to clear the database before each test for a better isolation / Create test_helper module to avoid repeating code / Add more notes API tests and refactor request handlers to use async/await syntax / Explore the possiblility of using 'ExpressJS Async Errors' lib to avoid try/catch blocks in the request handlers (Nooooooooo :D) /
+
+10. Start implementing new model and controller for users / Modify the notes model to include the user id / Install bcrypt lib for password hashing before saving the user to the database / Create specifics tests for the user model and controller / Create new user in dev mode with Postman /
