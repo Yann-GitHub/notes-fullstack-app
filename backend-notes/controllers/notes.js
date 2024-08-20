@@ -3,15 +3,26 @@
 // The router is then used in the main application module (app.js) to define the routes for the application.
 // The router is in fact a middleware, that can be used for defining "related routes" in a single place, which is typically placed in its own module.
 
+const jwt = require("jsonwebtoken");
 const notesRouter = require("express").Router();
 const Note = require("../models/note");
 const User = require("../models/user");
+
+// Helper function to extract the token from the request header
+const getTokenFrom = (request) => {
+  const authorization = request.get("authorization");
+  if (authorization && authorization.startsWith("Bearer ")) {
+    return authorization.replace("Bearer ", "");
+  }
+  return null;
+};
 
 // notesRouter.get("/", (request, response) => {
 //   Note.find({}).then((notes) => {
 //     response.json(notes);
 //   });
 // });
+
 // First refacto with async/await
 notesRouter.get("/", async (request, response) => {
   const notes = await Note.find({}).populate("user", {
@@ -37,9 +48,14 @@ notesRouter.get("/:id", async (request, response, next) => {
 notesRouter.post("/", async (request, response, next) => {
   const body = request.body;
 
-  const user = await User.findById(body.user);
-  // console.log("user", user);
-  // console.log("EEDFDdfdfdfdfdffdfdfdf");
+  // Check if the token is valid and extract the object from the token
+  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET);
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: "token invalid" });
+  }
+
+  const user = await User.findById(decodedToken.id);
+  // const user = await User.findById(body.user);
 
   const note = new Note({
     content: body.content,

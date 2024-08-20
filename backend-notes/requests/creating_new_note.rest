@@ -1,3 +1,4 @@
+### without JWT token ###
 Post http://localhost:3001/api/notes
 Content-Type: application/json
 
@@ -6,12 +7,21 @@ Content-Type: application/json
   "important": true
 }
 
-
-###
+### without JWT token ###
 Post http://localhost:3001/api/notes
 Content-Type: application/json
 
 {
   "content": "CSS is chaotic",
+  "important": true
+}
+
+### with JWT token ###
+Post http://localhost:3001/api/notes
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOiI2NmM0NmEzZDFkNDk5NTBhZTBkYjg1YjkiLCJpYXQiOjE3MjQxNjg2MzZ9.FRGBplL47tfjO2B3IugRBCyWNavIgEKlh1Pv8Hi2U7M
+
+{
+  "content": "JS is fun",
   "important": true
 }
