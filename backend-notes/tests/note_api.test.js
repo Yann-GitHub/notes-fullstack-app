@@ -4,15 +4,24 @@ const mongoose = require("mongoose");
 const supertest = require("supertest");
 const app = require("../app");
 const api = supertest(app); // Used to make HTTP requests to the application
+const bcrypt = require("bcrypt"); // Used to hash passwords
 
 const helper = require("./test_helper"); // Helper functions for recurring operations
 
 const Note = require("../models/note");
+const User = require("../models/user");
 
 describe("when there is initially some notes saved", () => {
   beforeEach(async () => {
     await Note.deleteMany({});
     await Note.insertMany(helper.initialNotes);
+
+    await User.deleteMany({});
+
+    const passwordHash = await bcrypt.hash("sekret", 10);
+    const user = new User({ username: "proot", passwordHash });
+
+    await user.save();
   });
 
   test("notes are returned as json", async () => {
@@ -65,9 +74,13 @@ describe("when there is initially some notes saved", () => {
 
   describe("addition of a new note", () => {
     test("succeeds with valid data", async () => {
+      const usersAtStart = await helper.usersInDb();
+      const userId = usersAtStart[0].id;
+
       const newNote = {
         content: "async/await simplifies making async calls",
         important: true,
+        user: userId,
       };
 
       await api
@@ -84,8 +97,11 @@ describe("when there is initially some notes saved", () => {
     });
 
     test("fails with status code 400 if data invalid", async () => {
+      const usersAtStart = await helper.usersInDb();
+      const userId = usersAtStart[0].id;
       const newNote = {
         important: true,
+        user: userId,
       };
 
       await api.post("/api/notes").send(newNote).expect(400);
@@ -114,5 +130,6 @@ describe("when there is initially some notes saved", () => {
 });
 
 after(async () => {
+  await User.deleteMany({});
   await mongoose.connection.close();
 });

@@ -2,11 +2,10 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-  //   username: String,
   username: {
     type: String,
     required: true,
-    unique: true, // this ensures the uniqueness of username
+    unique: true,
   },
   name: String,
   passwordHash: String,
@@ -20,9 +19,9 @@ const userSchema = new mongoose.Schema({
 
 userSchema.set("toJSON", {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
-    delete returnedObject._id;
-    delete returnedObject.__v;
+    returnedObject.id = returnedObject._id.toString(); // the id is a string representation of the _id
+    delete returnedObject._id; // the _id should not be revealed
+    delete returnedObject.__v; // the __v should not be revealed
     delete returnedObject.passwordHash; // the passwordHash should not be revealed
   },
 });
@@ -30,5 +29,4 @@ userSchema.set("toJSON", {
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
-
 // module.exports = mongoose.model("User", userSchema);
