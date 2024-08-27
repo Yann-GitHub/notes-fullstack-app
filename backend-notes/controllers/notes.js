@@ -11,8 +11,8 @@ const User = require("../models/user");
 // Helper function to extract the token from the request header
 const getTokenFrom = (request) => {
   const authorization = request.get("authorization");
-  if (authorization && authorization.startsWith("Bearer ")) {
-    return authorization.replace("Bearer ", "");
+  if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
+    return authorization.replace("bearer ", "");
   }
   return null;
 };
@@ -47,6 +47,8 @@ notesRouter.get("/:id", async (request, response, next) => {
 
 notesRouter.post("/", async (request, response, next) => {
   const body = request.body;
+  console.log("body", body);
+  console.log("eerrererererererrer");
 
   // Check if the token is valid and extract the object from the token
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET);
