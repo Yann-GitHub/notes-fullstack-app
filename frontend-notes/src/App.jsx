@@ -9,7 +9,6 @@ import noteService from "./services/notes"
 import loginService from "./services/login"
 
 const App = () => {
-  // const [notes, setNotes] = useState(props.notes) // if we use the local state and local data
   const [notes, setNotes] = useState([]) // if we use the server state
   const [newNote, setNewNote] = useState("")
   const [showAll, setShowAll] = useState(true)
@@ -28,6 +27,7 @@ const App = () => {
   // }, [])
   // console.log("render", notes.length, "notes")
 
+  // Get all notes from the server
   useEffect(() => {
     noteService
       .getAll()
@@ -40,20 +40,16 @@ const App = () => {
       })
   }, [])
 
-  //////// Modification of local state with local data ///////////
-  // const addNote = (event) => {
-  //   event.preventDefault()
-  //   const noteObject = {
-  //     content: newNote,
-  //     important: Math.random() > 0.5,
-  //     id: notes.length + 1,
-  //   }
+  // Check if the user is already logged in
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem("loggedNoteappUser")
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      noteService.setToken(user.token)
+    }
+  }, [])
 
-  //   setNotes(notes.concat(noteObject))
-  //   setNewNote("")
-  // }
-
-  //////// Modification of server state ///////////
   const addNote = (event) => {
     event.preventDefault()
     const noteObject = {
@@ -88,12 +84,9 @@ const App = () => {
         setNotes(notes.map((note) => (note.id !== id ? note : returnedNote)))
       })
       .catch((error) => {
-        // alert(
-        //   `The note with the id '${note.id}' was already deleted from the server 🤷🏻‍♂️`
-        // )
         console.log(error.message)
         setErrorMessage(
-          `Note '${note.content}' was already removed from server`
+          `Note '${note.content}' was already removed from server 🤷🏻‍♂️`
         )
         setTimeout(() => {
           setErrorMessage(null)
@@ -114,6 +107,8 @@ const App = () => {
         username,
         password,
       })
+
+      window.localStorage.setItem("loggedNoteappUser", JSON.stringify(user))
       noteService.setToken(user.token)
       setUser(user)
       setUsername("")
@@ -130,9 +125,6 @@ const App = () => {
     <div>
       <h1>Notes</h1>
       <Notification message={errorMessage} />
-
-      {/* {user === null && <LoginForm />}
-      {user !== null && <NoteForm />} */}
 
       {user === null ? (
         <LoginForm
