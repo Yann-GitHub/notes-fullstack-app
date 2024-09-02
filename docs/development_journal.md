@@ -32,3 +32,5 @@
 10. Start implementing new model and controller for users / Modify the notes model to include the user id / Install bcrypt lib for password hashing before saving the user to the database / Create specifics tests for the user model and controller / Create new user in dev mode with Postman / Modifiy notes and users controller to use populate method to shape the response /
 
 11. Start implementing authentication / Install jsonwebtoken lib / Add JWT_SECRET variable in .env file / Create a new route for user login and generate a token / Testing the login route with Postman and Vscode REST client / Modify the notes controller for limiting creating new notes to logged-in users / Testing the notes route with Postman and Vscode REST client / Add validity periode to the generate token and add specific error handling /
+
+12. Create Togglebable component for login and new note form (props.children) /
