@@ -3,7 +3,13 @@ const Notification = ({ message }) => {
     return null
   }
 
-  return <div className="error">{message}</div>
+  const errorNotificationClass = message.type === "error" ? "toastError" : ""
+
+  return (
+    <div className="overlay">
+      <div className={`toast ${errorNotificationClass}`}>{message.message}</div>
+    </div>
+  )
 }
 
 export default Notification

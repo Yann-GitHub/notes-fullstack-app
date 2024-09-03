@@ -7,26 +7,12 @@ import LoginForm from "./components/LoginForm"
 import Togglable from "./components/Togglable"
 
 import noteService from "./services/notes"
-import loginService from "./services/login"
 
 const App = () => {
   const [notes, setNotes] = useState([])
-  const [newNote, setNewNote] = useState("")
   const [showAll, setShowAll] = useState(true)
-  const [errorMessage, setErrorMessage] = useState(null)
-
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
+  const [notificationMessage, setNotificationMessage] = useState(null)
   const [user, setUser] = useState(null)
-
-  // useEffect(() => {
-  //   console.log("effect")
-  //   axios.get("http://localhost:3001/notes").then((response) => {
-  //     console.log("promise fulfilled")
-  //     setNotes(response.data)
-  //   })
-  // }, [])
-  // console.log("render", notes.length, "notes")
 
   // Get all notes from the server
   useEffect(() => {
@@ -36,7 +22,15 @@ const App = () => {
         setNotes(initialNotes)
       })
       .catch((error) => {
-        alert("Can not fetch data 🙏🏻")
+        // alert("Can not fetch data 🙏🏻")
+        setNotificationMessage({
+          message: "Can not fetch data 🙏🏻",
+          type: "error",
+        })
+        setTimeout(() => {
+          setNotificationMessage(null)
+        }, 5000)
+
         console.log(error)
       })
   }, [])
@@ -51,26 +45,6 @@ const App = () => {
     }
   }, [])
 
-  const addNote = (event) => {
-    event.preventDefault()
-    const noteObject = {
-      content: newNote,
-      important: Math.random() < 0.5,
-    }
-
-    noteService
-      .create(noteObject)
-      .then((returnedNote) => {
-        setNotes(notes.concat(returnedNote))
-        setNewNote("")
-      })
-      .catch((error) => {
-        alert("Can not add this to the list!! Network error 🤖")
-        console.log(error)
-        setNewNote("")
-      })
-  }
-
   const notesToShow = showAll ? notes : notes.filter((note) => note.important)
 
   const toggleImportanceOf = (id) => {
@@ -84,54 +58,26 @@ const App = () => {
       })
       .catch((error) => {
         console.log(error.message)
-        setErrorMessage(
+        setNotificationMessage(
           `Note '${note.content}' was already removed from server 🤷🏻‍♂️`
         )
         setTimeout(() => {
-          setErrorMessage(null)
+          setNotificationMessage(null)
         }, 5000)
         setNotes(notes.filter((n) => n.id !== id))
       })
   }
 
-  const handleNoteChange = (event) => {
-    setNewNote(event.target.value)
-  }
-
-  const handleLogin = async (event) => {
-    event.preventDefault()
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      })
-
-      window.localStorage.setItem("loggedNoteappUser", JSON.stringify(user))
-      noteService.setToken(user.token)
-      setUser(user)
-      setUsername("")
-      setPassword("")
-    } catch (exception) {
-      setErrorMessage("Wrong credentials")
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
-    }
-  }
-
   return (
     <div>
       <h1>Notes</h1>
-      <Notification message={errorMessage} />
+      <Notification message={notificationMessage} />
 
       {!user ? (
         <Togglable buttonLabel="log in">
           <LoginForm
-            handleLogin={handleLogin}
-            username={username}
-            password={password}
-            setUsername={setUsername}
-            setPassword={setPassword}
+            setUser={setUser}
+            setNotificationMessage={setNotificationMessage}
           />
         </Togglable>
       ) : (
@@ -139,9 +85,9 @@ const App = () => {
           <p>{user.name} logged-in</p>
           <Togglable buttonLabel="new note">
             <NoteForm
-              newNote={newNote}
-              handleNoteChange={handleNoteChange}
-              addNote={addNote}
+              notes={notes}
+              setNotes={setNotes}
+              setNotificationMessage={setNotificationMessage}
             />
           </Togglable>
         </div>

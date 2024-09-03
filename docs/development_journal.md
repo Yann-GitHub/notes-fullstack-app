@@ -33,4 +33,4 @@
 
 11. Start implementing authentication / Install jsonwebtoken lib / Add JWT_SECRET variable in .env file / Create a new route for user login and generate a token / Testing the login route with Postman and Vscode REST client / Modify the notes controller for limiting creating new notes to logged-in users / Testing the notes route with Postman and Vscode REST client / Add validity periode to the generate token and add specific error handling /
 
-12. Create Togglebable component for login and new note form (props.children) /
+12. Create Togglebable component for login and new note form (props.children) / Code refacto - props drilling for loginForm and noteForm - from app to concerned components /
