@@ -47,8 +47,6 @@ notesRouter.get("/:id", async (request, response, next) => {
 
 notesRouter.post("/", async (request, response, next) => {
   const body = request.body;
-  console.log("body", body);
-  console.log("eerrererererererrer");
 
   // Check if the token is valid and extract the object from the token
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET);

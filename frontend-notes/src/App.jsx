@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Note from "./components/Note"
 import Notification from "./components/Notification"
 import Footer from "./components/Footer"
@@ -45,6 +45,8 @@ const App = () => {
     }
   }, [])
 
+  const noteFormRef = useRef()
+
   const notesToShow = showAll ? notes : notes.filter((note) => note.important)
 
   const toggleImportanceOf = (id) => {
@@ -83,11 +85,12 @@ const App = () => {
       ) : (
         <div>
           <p>{user.name} logged-in</p>
-          <Togglable buttonLabel="new note">
+          <Togglable buttonLabel="new note" ref={noteFormRef}>
             <NoteForm
               notes={notes}
               setNotes={setNotes}
               setNotificationMessage={setNotificationMessage}
+              noteFormRef={noteFormRef}
             />
           </Togglable>
         </div>

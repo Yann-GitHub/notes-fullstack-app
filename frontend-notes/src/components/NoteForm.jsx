@@ -1,7 +1,7 @@
 import { useState } from "react"
 import noteService from "../services/notes"
 
-const NoteForm = ({ setNotes, notes, setNotificationMessage }) => {
+const NoteForm = ({ setNotes, notes, setNotificationMessage, noteFormRef }) => {
   const [newNote, setNewNote] = useState("")
 
   const addNote = async (event) => {
@@ -16,6 +16,7 @@ const NoteForm = ({ setNotes, notes, setNotificationMessage }) => {
       const returnedNote = await noteService.create(noteObject)
       setNotes(notes.concat(returnedNote))
       setNewNote("")
+      noteFormRef.current.toggleVisibility()
     } catch (error) {
       setNotificationMessage({
         message: "Can not add this to the list!! Network error 🤖",
