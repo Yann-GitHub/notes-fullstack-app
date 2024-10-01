@@ -5,6 +5,8 @@ const cors = require("cors");
 const notesRouter = require("./controllers/notes");
 const usersRouter = require("./controllers/users");
 const loginRouter = require("./controllers/login");
+// const testingRouter = require("./controllers/testing");
+
 const middleware = require("./utils/middleware");
 const logger = require("./utils/logger");
 const mongoose = require("mongoose");
@@ -30,6 +32,11 @@ app.use(middleware.requestLogger); // Middleware function that logs the request 
 app.use("/api/notes", notesRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/login", loginRouter);
+
+if (process.env.NODE_ENV === "test") {
+  const testingRouter = require("./controllers/testing");
+  app.use("/api/testing", testingRouter);
+}
 
 app.use(middleware.unknownEndpoint); // Middleware function that returns an error message if the request is made to a non-existent route
 app.use(middleware.errorHandler); // Middleware function that handles errors in a centralized way
